@@ -35,6 +35,12 @@ jobs:
       # 
       # Deploys MongoDB.
       #
+      - name: Grant execute permissions for infrastructure.sh
+        run: chmod +x ./scripts/cd/infrastructure.sh  
+      - name: az login
+        run: ./scripts/cd/infrastructure.sh
+      - name: Install Kubectl
+        uses: azure/setup-kubectl@v1      
       - name: Deploy MongoDB
         run: kubectl apply -f ./scripts/cd/mongodb.yaml
 

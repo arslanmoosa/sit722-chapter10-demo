@@ -19,4 +19,18 @@ set -u # or set -o nounset
 : "$NAME"
 : "$VERSION"
 
+az login
+az aks get-credentials --resource-group deakinuni --name chapter10demo --overwrite-existing
 envsubst < ./scripts/cd/${NAME}.yaml | kubectl apply -f -
+echo "waiting 20 seconds for ips generation"
+sleep 20
+POD_NAME=$(kubectl get pods --no-headers -o custom-columns=":metadata.name" | head -n 1)
+
+# Display the generated pod name
+echo "Generated pod name: $POD_NAME"
+
+# Fetch and display logs of the pod
+echo "Fetching logs for pod: $POD_NAME"
+kubectl logs $POD_NAME
+kubectl get deployment
+kubectl get services
